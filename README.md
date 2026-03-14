@@ -229,19 +229,6 @@ Docker images can also be published using **GitHub Container Registry** with CI/
 
 ---
 
-## 📈 Why This Project is Resume-Worthy
-
-This project demonstrates:
-
-- Real-world **AI + backend system design**
-- Secure **JWT authentication implementation**
-- Integration with **Large Language Model APIs**
-- Scalable **FastAPI architecture**
-- Containerized deployment with **Docker**
-- Production-style backend structure
-
-It reflects the skills required for modern backend and AI-powered SaaS applications.
-
 ---
 
 ## 📚 References
