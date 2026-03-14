@@ -1,126 +1,258 @@
-# FastAPI-LLM
+# 🚀 AI Meeting Intelligence API
 
-![Project Banner](https://img.shields.io/badge/Status-Development-blue)
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.95-green)
-![Docker](https://img.shields.io/badge/Docker-Container-lightgrey)
+AI Meeting Intelligence API is a backend service that analyzes meeting transcripts using Large Language Models (LLMs) and converts unstructured conversations into structured insights such as summaries, action items, decisions, and deadlines.
+
+The project demonstrates how modern backend systems combine **FastAPI, JWT authentication, PostgreSQL, and AI APIs** to build intelligent automation services.
+
+It is designed with a **modular architecture**, containerized using **Docker**, and built to be easily deployable on cloud platforms.
 
 ---
 
-## 🚀 Project Overview
+## 📌 Problem Statement
 
-**FastAPI-LLM** is an advanced, Dockerized Python project that integrates **Large Language Models (LLMs)** with a **FastAPI backend**. It demonstrates how to leverage AI to perform intelligent automation tasks and exposes APIs that can be consumed by other applications.
+Meetings often generate long transcripts that are difficult to review later. Important information such as key decisions, action items, and deadlines can easily get lost.
 
-This project is production-ready in structure, containerized with Docker, and designed for deployment on **cloud platforms like AWS**.
+This project solves that problem by automatically analyzing meeting transcripts using AI and converting them into structured insights that teams can quickly understand and act upon.
+
+---
+
+## ⚙️ How the System Works
+
+1. User registers and logs into the system
+2. A meeting transcript is submitted through the API
+3. The backend sends the transcript to an LLM service
+4. The AI extracts:
+   - Meeting summary
+   - Action items
+   - Key decisions
+   - Deadlines
+5. The processed insights are returned via the API and can optionally be stored in the database
 
 ---
 
 ## 🧱 Features
 
-* **FastAPI Backend:** Lightweight, high-performance web API framework.
-* **LLM Integration:** Uses AI models to perform automation and intelligent processing.
-* **Dockerized:** Easily run the app locally or in cloud environments without dependency conflicts.
-* **Cloud-Ready:** Fully compatible with AWS ECS / EC2 deployment.
-* **Modular Architecture:** Clean folder structure for scalability and maintainability.
-* **Health Endpoint:** Check service status with a simple `/health` route.
+- 🔐 **User Authentication** – Secure JWT-based login and registration
+- 🤖 **AI Meeting Analysis** – Extract summaries, decisions, and action items from transcripts
+- 🗂 **Meeting Management** – Store and manage meeting records
+- 📊 **Structured AI Output** – Convert unstructured text into actionable insights
+- 🧠 **LLM Integration** – Supports OpenAI or other LLM APIs
+- 🐳 **Dockerized Deployment** – Run the project inside containers
+- ☁ **Cloud Ready** – Deployable on AWS or other cloud providers
+- 📦 **Modular Architecture** – Clean scalable backend structure
 
 ---
 
-## 📂 Project Structure
-
+## 🗂 Project Structure
 ```
-FastAPI-LLM/
-│── app/
-│   ├── api/          # API route definitions
-│   ├── core/         # Core utilities and configurations
-│   ├── models/       # Data and ML model classes
-│   ├── services/     # Business logic and AI services
-│   └── main.py       # FastAPI app entrypoint
+AI-Meeting-Intelligence/
 │
-│── Dockerfile
-│── requirements.txt
-│── README.md
-│── .gitignore
+├── app/
+│   ├── api/            # API route definitions
+│   ├── core/           # Core configurations (database, security, settings)
+│   ├── models/         # Database models and Pydantic schemas
+│   ├── services/       # Business logic and AI services
+│   ├── utils/          # Helper utilities
+│   └── main.py         # FastAPI application entry point
+│
+├── tests/              # Unit and integration tests
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .env.example
+├── README.md
+└── .gitignore
 ```
 
 ---
 
-## ⚙️ Tech Stack
+## 🧰 Tech Stack
 
-| Layer            | Technology            |
-| ---------------- | --------------------- |
-| Backend API      | FastAPI               |
-| Language Model   | OpenAI / LLM API      |
-| Containerization | Docker                |
-| Cloud Deployment | AWS (ECS/EC2/S3)      |
-| Configuration    | Python-dotenv / YAML  |
-| CI/CD (future)   | GitHub Actions / GHCR |
+| Layer             | Technology           |
+| ----------------- | -------------------- |
+| Backend Framework | FastAPI              |
+| Language          | Python               |
+| Database          | PostgreSQL           |
+| ORM               | SQLAlchemy           |
+| Authentication    | JWT                  |
+| AI Integration    | OpenAI / LLM APIs    |
+| Containerization  | Docker               |
+| Cloud Deployment  | AWS (EC2 / ECS / S3) |
+| Configuration     | python-dotenv        |
+| CI/CD (optional)  | GitHub Actions       |
 
 ---
 
-## 💻 Getting Started
+## 🔌 API Endpoints
 
-### Prerequisites
+### Authentication
 
-* Python 3.10+
-* Docker installed locally
-* Optional: OpenAI API key for LLM integration
+**Register User**
+```
+POST /auth/register
+```
 
-### Run Locally with Docker
+Request body:
+```json
+{
+  "email": "user@example.com",
+  "password": "1234"
+}
+```
 
+**Login User**
+```
+POST /auth/login
+```
+
+Response:
+```json
+{
+  "access_token": "JWT_TOKEN"
+}
+```
+
+---
+
+### AI Meeting Intelligence
+
+**Analyze Meeting Transcript**
+```
+POST /api/v1/meeting/analyze
+```
+
+Request:
+```json
+{
+  "transcript": "We discussed launching the product next month. Shreya will handle backend development."
+}
+```
+
+Response:
+```json
+{
+  "summary": "The team discussed launching the product next month.",
+  "action_items": [
+    "Shreya will handle backend development"
+  ],
+  "decisions": [
+    "Product launch planned for next month"
+  ]
+}
+```
+
+---
+
+## 🧪 Running the Project Locally
+
+### 1️⃣ Clone the repository
 ```bash
-# Build the Docker image
-docker build -t fastapi-llm:latest .
-
-# Run the container
-docker run -p 8000:8000 fastapi-llm:latest
-
-# Visit API health check
-http://localhost:8000/health
+git clone https://github.com/yourusername/ai-meeting-intelligence-api.git
+cd ai-meeting-intelligence-api
 ```
 
-### Using the LLM API
+### 2️⃣ Create virtual environment
+```bash
+python -m venv venv
+```
 
-* Ensure your **OpenAI API key** or other LLM credentials are configured in `.env`
-* Call the AI-powered endpoints via **POST requests** with your input payload.
+Activate it:
+```bash
+# macOS/Linux
+source venv/bin/activate
 
----
+# Windows
+venv\Scripts\activate
+```
 
-## 📦 Deployment
+### 3️⃣ Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
-* Dockerized project can be deployed on **AWS Free Tier** using ECS or EC2.
-* Cloud storage (like **S3**) can be used for storing outputs or logs.
-* CI/CD (GitHub Actions) can automate building and pushing Docker images to **GHCR**.
+### 4️⃣ Configure environment variables
 
----
+Create a `.env` file:
+```env
+DATABASE_URL=postgresql://user:password@localhost:5432/meeting_ai_db
+OPENAI_API_KEY=your_api_key
+SECRET_KEY=your_secret_key
+```
 
-## 🛠️ Future Improvements
+### 5️⃣ Run the API
+```bash
+uvicorn app.main:app --reload
+```
 
-* Add **authentication & authorization** to API routes
-* Implement **automatic versioned Docker builds** via CI/CD
-* Extend AI services with **multiple LLM models** and pipelines
-* Integrate **logging & monitoring** for production readiness
-
----
-
-## 🖌️ Why This Project is Resume-Worthy
-
-* Showcases **full-stack backend development** using Python + FastAPI
-* Demonstrates **AI/LLM integration** in real-world scenarios
-* Highlights **cloud deployment readiness** with Docker & AWS
-* Illustrates **modern development best practices**: modular architecture, containerization, CI/CD
-
----
-
-## 🔗 References
-
-* [FastAPI Documentation](https://fastapi.tiangolo.com/)
-* [Docker Official Docs](https://docs.docker.com/)
-* [OpenAI API Documentation](https://platform.openai.com/docs)
-* [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry)
+Open API documentation:
+```
+http://127.0.0.1:8000/docs
+```
 
 ---
 
-## 🏷️ License
+## 🐳 Running with Docker
 
-MIT License – free to use and modify
+Build the image:
+```bash
+docker build -t ai-meeting-intelligence .
+```
+
+Run the container:
+```bash
+docker run -p 8000:8000 ai-meeting-intelligence
+```
+
+---
+
+## ☁ Deployment
+
+This project can be deployed using:
+
+- AWS EC2
+- AWS ECS
+- Docker containers
+- Cloud platforms like Render or Railway
+
+Docker images can also be published using **GitHub Container Registry** with CI/CD.
+
+---
+
+## 🔮 Future Improvements
+
+- Role-based authentication and authorization
+- Real-time meeting transcription integration
+- Support for multiple AI models
+- Meeting search and analytics dashboard
+- Logging and monitoring for production
+- Automatic AI summarization pipelines
+
+---
+
+## 📈 Why This Project is Resume-Worthy
+
+This project demonstrates:
+
+- Real-world **AI + backend system design**
+- Secure **JWT authentication implementation**
+- Integration with **Large Language Model APIs**
+- Scalable **FastAPI architecture**
+- Containerized deployment with **Docker**
+- Production-style backend structure
+
+It reflects the skills required for modern backend and AI-powered SaaS applications.
+
+---
+
+## 📚 References
+
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)
+- [SQLAlchemy Documentation](https://docs.sqlalchemy.org/)
+- [OpenAI API Documentation](https://platform.openai.com/docs/)
+- [Docker Documentation](https://docs.docker.com/)
+
+---
+
+## 📄 License
+
+MIT License — free to use and modify.
